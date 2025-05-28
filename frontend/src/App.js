@@ -10,7 +10,7 @@ import {
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import axios from 'axios';
-
+import AITodo from './components/AITodo';
 const theme = createTheme({
   palette: {
     primary: {
@@ -75,6 +75,7 @@ function App() {
           <Typography variant="h3" component="h1" gutterBottom align="center">
             Todo List
           </Typography>
+          <AITodo/>
           <TodoForm
             onSubmit={handleAddTodo}
             editingTodo={editingTodo}

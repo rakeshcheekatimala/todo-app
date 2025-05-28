@@ -114,7 +114,7 @@ for node in ["create_task", "read_tasks", "update_task", "delete_task", "unknown
 todo_graph = graph.compile()
 
 # --- 5. Flask Route ---
-@app.route("/nlp", methods=["POST"])
+@app.route("/chat", methods=["POST"])
 def nlp_endpoint():
     data = request.json
     user_input = data.get("query")
