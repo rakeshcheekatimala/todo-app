@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './AITodo.css';
 
 const AITodo = () => {
+  console.log("AITodo");
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,13 +18,15 @@ const AITodo = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ query:message }),
       });
 
       const data = await response.json();
+
+      console.log(data);
       setChatHistory([...chatHistory, 
         { type: 'user', content: message },
-        { type: 'assistant', content: data.response }
+        { type: 'assistant', content: data }
       ]);
       setMessage('');
     } catch (error) {
@@ -51,7 +54,32 @@ const AITodo = () => {
         <div className="chat-history">
           {chatHistory.map((msg, index) => (
             <div key={index} className={`chat-message ${msg.type}`}>
-              {msg.content}
+              {Array.isArray(msg.content) ? (
+                <ul className="task-list">
+                  {msg.content.map((task, taskIndex) => (
+                    <li key={task._id} className={`task-item ${task.isCompleted ? 'completed' : ''}`}>
+                      <span className="task-status">{task.isCompleted ? '✓' : '○'}</span>
+                      <span className="task-status">{task.title}: </span>
+                      <span className="task-description">{task.description}</span>
+                      <span className="task-date">{new Date(task.createdAt).toLocaleDateString()}</span>
+                     
+                    </li>
+                  ))}
+                </ul>
+              ) : msg.content._id ? (
+                <ul className="task-list">
+                  <li key={msg.content._id} className={`task-item ${msg.content.isCompleted ? 'completed' : ''}`}>
+                    <span className="task-status">{msg.content.isCompleted ? '✓' : '○'}</span>
+                    <span className="task-status">{msg.content.title}: </span>
+                    <span className="task-description">{msg.content.description}</span>
+                    <span className="task-date">{new Date(msg.content.createdAt).toLocaleDateString()}</span>
+                  </li>
+                </ul>
+              ) : msg.content.message ? (
+                <div className="message-response">{msg.content.message}</div>
+              ) : (
+                msg.content
+              )}
             </div>
           ))}
           {isLoading && <div className="loading">AI is thinking...</div>}
