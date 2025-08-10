@@ -133,7 +133,6 @@ The agent understands your intent, figures out what you want, and calls the corr
 
 ## UI/API Flow Diagram
 
-![Mermaid](/demoscreenshot/mermaid.png)
 
 ```mermaid
 sequenceDiagram
