@@ -133,6 +133,8 @@ The agent understands your intent, figures out what you want, and calls the corr
 
 ## UI/API Flow Diagram
 
+![Mermaid](/demoscreenshot/mermaid.png)
+
 ```mermaid
 sequenceDiagram
     participant User
@@ -149,6 +151,8 @@ sequenceDiagram
     todo-ai-agent-->>ReactApp: { "message": "Todo deleted successfully" }
     ReactApp-->>User: Shows result
 ```
+
+
 
 ---
 
@@ -257,3 +261,10 @@ Install all the packages & at the root level of the app
  - docker compose up
  - cd todo-app
  - python app.py
+
+
+Screenshots:
+
+![DEMO](/demoscreenshot/listalltodos.png)
+
+![Swagger](/demoscreenshot/swagger.png)
