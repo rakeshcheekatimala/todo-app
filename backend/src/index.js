@@ -4,6 +4,10 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
+const { setupTelemetry } = require('./telemetry');
+
+// Initialize OpenTelemetry and get metrics
+const metrics = setupTelemetry();
 
 dotenv.config();
 
@@ -12,6 +16,31 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Metrics middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  metrics.requestCounter.add(1, { method: req.method, path: req.path });
+
+  res.on('finish', () => {
+    const duration = (Date.now() - start) / 1000;
+    metrics.requestDuration.record(duration, {
+      method: req.method,
+      path: req.path,
+      status: res.statusCode,
+    });
+
+    if (res.statusCode >= 400) {
+      metrics.errorCounter.add(1, {
+        method: req.method,
+        path: req.path,
+        status: res.statusCode,
+      });
+    }
+  });
+
+  next();
+});
 
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -71,8 +100,10 @@ const Todo = mongoose.model('Todo', todoSchema);
 app.get('/todos', async (req, res) => {
   try {
     const todos = await Todo.find().sort({ createdAt: -1 });
+    metrics.crudCounter.add(1, { operation: 'read' });
     res.json(todos);
   } catch (error) {
+    metrics.crudCounter.add(1, { operation: 'read', error: true });
     res.status(500).json({ message: error.message });
   }
 });
@@ -117,8 +148,10 @@ app.post('/todos', async (req, res) => {
   try {
     const todo = new Todo(req.body);
     const savedTodo = await todo.save();
+    metrics.crudCounter.add(1, { operation: 'create' });
     res.status(201).json(savedTodo);
   } catch (error) {
+    metrics.crudCounter.add(1, { operation: 'create', error: true });
     res.status(400).json({ message: error.message });
   }
 });
@@ -177,10 +210,13 @@ app.put('/todos/:id', async (req, res) => {
       { new: true }
     );
     if (!todo) {
+      metrics.crudCounter.add(1, { operation: 'update', error: 'not_found' });
       return res.status(404).json({ message: 'Todo not found' });
     }
+    metrics.crudCounter.add(1, { operation: 'update' });
     res.json(todo);
   } catch (error) {
+    metrics.crudCounter.add(1, { operation: 'update', error: true });
     res.status(400).json({ message: error.message });
   }
 });
@@ -226,10 +262,13 @@ app.delete('/todos/:id', async (req, res) => {
   try {
     const todo = await Todo.findByIdAndDelete(req.params.id);
     if (!todo) {
+      metrics.crudCounter.add(1, { operation: 'delete', error: 'not_found' });
       return res.status(404).json({ message: 'Todo not found' });
     }
+    metrics.crudCounter.add(1, { operation: 'delete' });
     res.json({ message: 'Todo deleted successfully' });
   } catch (error) {
+    metrics.crudCounter.add(1, { operation: 'delete', error: true });
     res.status(500).json({ message: error.message });
   }
 });
