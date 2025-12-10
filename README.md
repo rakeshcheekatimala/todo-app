@@ -150,9 +150,6 @@ sequenceDiagram
     todo-ai-agent-->>ReactApp: { "message": "Todo deleted successfully" }
     ReactApp-->>User: Shows result
 ```
-
-
-
 ---
 
 ## What is LangGraph and Why Use It?
