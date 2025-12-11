@@ -270,3 +270,7 @@ Screenshots:
 ![MCP Working](./mcp-server/MCPTodos.png)
 
 ![MCP TODOS WORKING](./mcp-server/MCPTodosWorking.png)
+
+![Cursor TODO MCP](./mcp-server/CursorTODOMCP.png)
+
+![Cursor MCP Working](./mcp-server/CursorTODOMCPSERVER.png)
