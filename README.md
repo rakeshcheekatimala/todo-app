@@ -264,3 +264,9 @@ Screenshots:
 ![DEMO](/demoscreenshot/listalltodos.png)
 
 ![Swagger](/demoscreenshot/swagger.png)
+
+# MCP Server
+
+![MCP Working](./mcp-server/MCPTodos.png)
+
+![MCP TODOS WORKING](./mcp-server/MCPTodosWorking.png)
