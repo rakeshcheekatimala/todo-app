@@ -133,6 +133,7 @@ The agent understands your intent, figures out what you want, and calls the corr
 
 ## UI/API Flow Diagram
 
+
 ```mermaid
 sequenceDiagram
     participant User
@@ -149,7 +150,6 @@ sequenceDiagram
     todo-ai-agent-->>ReactApp: { "message": "Todo deleted successfully" }
     ReactApp-->>User: Shows result
 ```
-
 ---
 
 ## What is LangGraph and Why Use It?
@@ -257,3 +257,20 @@ Install all the packages & at the root level of the app
  - docker compose up
  - cd todo-app
  - python app.py
+
+
+Screenshots:
+
+![DEMO](/demoscreenshot/listalltodos.png)
+
+![Swagger](/demoscreenshot/swagger.png)
+
+# MCP Server
+
+![MCP Working](./mcp-server/MCPTodos.png)
+
+![MCP TODOS WORKING](./mcp-server/MCPTodosWorking.png)
+
+![Cursor TODO MCP](./mcp-server/CursorTODOMCP.png)
+
+![Cursor MCP Working](./mcp-server/CursorTODOMCPSERVER.png)
