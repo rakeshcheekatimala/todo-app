@@ -2,16 +2,25 @@ import React from 'react';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './App';
-import AITodo from './components/AITodo';
+import AITodo from './components/AIChat/NewAITodo';
+import { ThemeProvider } from './theme/ThemeProvider';
+import { ToastProvider } from './context/ToastContext';
+import { Header } from './components/Layout';
+import './theme/global.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ai" element={<AITodo />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <ToastProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ai" element={<AITodo />} />
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 
